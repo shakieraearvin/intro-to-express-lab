@@ -63,23 +63,25 @@ const minPrice = req.query.minPrice
 const maxPrice = req.query.maxPrice
 const type = req.query.type
 
-const filterShoes = [];
+const filteredContent = [];
 for (let index = 0; index < shoes.length; index++) {
     const element = shoes[index];
     //console.log(element)
 
-    if (element.price >= minPrice) {
-        console.log(element, 'this element is more expensive than the min price')
-    };
-    if (element.price <= maxPrice) {
+    if ((minPrice && element.price < minPrice) ||
+        (maxPrice && element.price > maxPrice) ||
+        (type && element.type !== type)) {
 
-    };
-    if (element.type === '' )
+
+        } else { 
+            filteredContent.push(element);
+        }
 }
-console.log('this is the', minPrice);
-console.log(req.query);
-
-   res.send(shoes) 
+if (filteredContent.length > 0) {
+    res.send(filteredContent);
+} else {
+    res.send(shoes);
+}
 });
 
 
